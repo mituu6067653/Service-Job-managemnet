@@ -204,7 +204,7 @@ export default async function DashboardPage() {
                 <div className="p-8 text-center text-slate-500 text-sm">No jobs registered yet.</div>
               ) : (
                 <div className="divide-y divide-slate-100">
-                  {recentJobs.map((job) => (
+                  {recentJobs.map((job: any) => (
                     <div key={job.id} className="p-4 hover:bg-slate-50/80 transition-colors flex items-center justify-between">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
@@ -248,7 +248,7 @@ export default async function DashboardPage() {
                 <p className="text-xs text-slate-500 text-center py-4">No active technicians registered.</p>
               ) : (
                 <div className="space-y-4">
-                  {technicians.map((tech) => (
+                  {technicians.map((tech: any) => (
                     <div key={tech.id} className="p-3 rounded-lg border border-slate-100 bg-slate-50/50 flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-semibold text-slate-900">{tech.name}</h4>
