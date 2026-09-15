@@ -48,7 +48,7 @@ export async function middleware(req: NextRequest) {
         '/technicians',
       ];
 
-      const isForbiddenPage = forbiddenForTech.some((route) => pathname.startsWith(route));
+      const isForbiddenPage = forbiddenForTech.some((route: string) => pathname.startsWith(route));
       if (isForbiddenPage) {
         const dashboardUrl = new URL('/dashboard', req.url);
         return NextResponse.redirect(dashboardUrl);

@@ -27,7 +27,7 @@ export default async function SchedulePage() {
         </div>
 
         <div className="space-y-4">
-          {jobs.map((job) => (
+          {jobs.map((job: any) => (
             <Card key={job.id} className="hover:border-brand-300 transition-all">
               <CardContent className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-start gap-4">

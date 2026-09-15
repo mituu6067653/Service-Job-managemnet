@@ -47,7 +47,7 @@ export default async function PaymentsPage() {
               <div className="p-8 text-center text-slate-500 text-sm">No payment records logged yet.</div>
             ) : (
               <div className="divide-y divide-slate-100">
-                {payments.map((p) => (
+                {payments.map((p: any) => (
                   <div key={p.id} className="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
