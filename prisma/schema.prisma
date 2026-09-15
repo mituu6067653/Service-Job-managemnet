@@ -1,0 +1,257 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Business {
+  id              String           @id @default(uuid())
+  name            String
+  slug            String           @unique
+  email           String
+  phone           String
+  address         String?
+  logoUrl         String?
+  taxNumber       String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  users           User[]
+  customers       Customer[]
+  serviceRequests ServiceRequest[]
+  jobs            Job[]
+  technicians     Technician[]
+  services        ServiceCatalog[]
+  invoices        Invoice[]
+  payments        Payment[]
+  auditLogs       AuditLog[]
+}
+
+model User {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  email       String   @unique
+  password    String
+  name        String
+  phone       String?
+  role        String   @default("ADMIN") // ADMIN, MANAGER, TECHNICIAN
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  technician ProfileTechnician?
+  auditLogs  AuditLog[]
+
+  @@index([businessId])
+}
+
+model Customer {
+  id              String           @id @default(uuid())
+  businessId      String
+  business        Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name            String
+  phone           String
+  email           String?
+  address         String
+  notes           String?
+  isArchived      Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  serviceRequests ServiceRequest[]
+  jobs            Job[]
+  invoices        Invoice[]
+
+  @@index([businessId])
+}
+
+model ServiceCatalog {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  basePrice   Float
+  category    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  jobs        Job[]
+
+  @@index([businessId])
+}
+
+model Technician {
+  id              String             @id @default(uuid())
+  businessId      String
+  business        Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name            String
+  phone           String
+  email           String?
+  specialization String?
+  isActive        Boolean            @default(true)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  profile         ProfileTechnician?
+  jobs            Job[]
+
+  @@index([businessId])
+}
+
+model ProfileTechnician {
+  id           String     @id @default(uuid())
+  userId       String     @unique
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  technicianId String     @unique
+  technician   Technician @relation(fields: [technicianId], references: [id], onDelete: Cascade)
+}
+
+model ServiceRequest {
+  id            String   @id @default(uuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customerId    String
+  customer      Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  serviceType   String
+  description   String
+  preferredDate String?
+  preferredTime String?
+  location      String
+  priority      String   @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  status        String   @default("NEW")    // NEW, CONTACTED, SCHEDULED, CONVERTED, CANCELLED
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  job           Job?
+
+  @@index([businessId])
+  @@index([customerId])
+}
+
+model Job {
+  id               String          @id @default(uuid())
+  jobCode          String          // e.g. JOB-1001
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customerId       String
+  customer         Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  requestId        String?         @unique
+  request          ServiceRequest? @relation(fields: [requestId], references: [id], onDelete: SetNull)
+  technicianId     String?
+  technician       Technician?     @relation(fields: [technicianId], references: [id], onDelete: SetNull)
+  serviceCatalogId String?
+  serviceCatalog   ServiceCatalog? @relation(fields: [serviceCatalogId], references: [id], onDelete: SetNull)
+  
+  title            String
+  description      String
+  address          String
+  priority         String          @default("MEDIUM")    // LOW, MEDIUM, HIGH, URGENT
+  status           String          @default("SCHEDULED") // SCHEDULED, ASSIGNED, EN_ROUTE, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED
+  scheduledDate    String?
+  scheduledTime    String?
+  estimatedCost    Float           @default(0.0)
+  finalCost        Float?
+  notes            String?
+  isArchived       Boolean         @default(false)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  attachments      Attachment[]
+  invoices         Invoice[]
+
+  @@index([businessId])
+  @@index([customerId])
+  @@index([technicianId])
+}
+
+model Invoice {
+  id             String      @id @default(uuid())
+  invoiceNumber  String      // e.g. INV-1001
+  businessId     String
+  business       Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customerId     String
+  customer       Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  jobId          String?
+  job            Job?        @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  
+  subtotal       Float
+  taxAmount      Float       @default(0.0)
+  discountAmount Float       @default(0.0)
+  totalAmount    Float
+  paidAmount     Float       @default(0.0)
+  status         String      @default("DRAFT") // DRAFT, ISSUED, PARTIALLY_PAID, PAID, OVERDUE, CANCELLED
+  dueDate        String?
+  notes          String?
+  isArchived     Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  items          InvoiceItem[]
+  payments       Payment[]
+
+  @@index([businessId])
+  @@index([customerId])
+  @@index([jobId])
+}
+
+model InvoiceItem {
+  id          String   @id @default(uuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Int      @default(1)
+  unitPrice   Float
+  total       Float
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  invoiceId     String
+  invoice       Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount        Float
+  method        String   @default("CASH") // CASH, UPI, CARD, BANK_TRANSFER, OTHER
+  transactionId String?
+  paymentDate   DateTime @default(now())
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  @@index([businessId])
+  @@index([invoiceId])
+}
+
+model Attachment {
+  id        String   @id @default(uuid())
+  jobId     String
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  url       String
+  fileType  String
+  fileName  String
+  fileSize  Int
+  createdAt DateTime @default(now())
+
+  @@index([jobId])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  entity     String
+  entityId   String?
+  metadata   String?
+  createdAt  DateTime @default(now())
+
+  @@index([businessId])
+}
