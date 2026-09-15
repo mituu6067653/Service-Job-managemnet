@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     const hashedPassword = await hashPassword(validated.password);
 
     // Create Business & Admin User transactionally
-    const result = await db.$transaction(async (tx) => {
+    const result = await db.$transaction(async (tx: any) => {
       const business = await tx.business.create({
         data: {
           name: validated.businessName,

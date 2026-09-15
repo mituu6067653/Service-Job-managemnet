@@ -218,8 +218,9 @@ const createMockHandler = () => {
       create: async () => ({}),
       findMany: async () => [],
     },
-    business: {
-      findUnique: async () => mockBusiness,
+    $transaction: async (fn: any) => {
+      const txMock = createMockHandler();
+      return await fn(txMock);
     },
   };
 };
