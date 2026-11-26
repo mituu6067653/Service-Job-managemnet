@@ -39,20 +39,20 @@ export default function CustomerTrackClientView() {
   const currentStepIndex = job ? statusSteps.indexOf(job.status) : -1;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between py-8 px-4 sm:px-6">
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-between py-6 px-3 sm:px-6">
       <div className="max-w-2xl mx-auto w-full space-y-6">
         {/* Brand Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-4 gap-2">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold shrink-0">
               <Wrench className="w-5 h-5" />
             </div>
-            <div>
-              <h1 className="text-lg font-bold text-slate-900">ServiceFlow Customer Portal</h1>
-              <p className="text-xs text-slate-500">Live Service Status & Receipt Tracking</p>
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-lg font-bold text-slate-900 truncate">ServiceFlow Customer Portal</h1>
+              <p className="text-[11px] sm:text-xs text-slate-500 truncate">Live Service Status & Receipt Tracking</p>
             </div>
           </div>
-          <Link href="/login" className="text-xs font-semibold text-brand-600 hover:underline">
+          <Link href="/login" className="text-xs font-semibold text-brand-600 hover:underline shrink-0">
             Staff Sign In
           </Link>
         </div>
@@ -67,7 +67,7 @@ export default function CustomerTrackClientView() {
               Enter your <strong>Job Reference Code</strong> (e.g. <code>JOB-1001</code>) or registered phone number:
             </p>
 
-            <form onSubmit={handleTrack} className="flex gap-2">
+            <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-2">
               <div className="flex-1">
                 <Input
                   placeholder="JOB-1001 or 9811122334"
@@ -76,7 +76,7 @@ export default function CustomerTrackClientView() {
                   required
                 />
               </div>
-              <Button type="submit" isLoading={isLoading}>
+              <Button type="submit" isLoading={isLoading} className="w-full sm:w-auto">
                 <Search className="w-4 h-4 mr-1" /> Track
               </Button>
             </form>
@@ -94,18 +94,18 @@ export default function CustomerTrackClientView() {
           <div className="space-y-5 animate-in fade-in">
             <Card>
               <CardContent className="pt-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-mono font-bold bg-brand-50 text-brand-700 px-2 py-0.5 rounded border border-brand-200">
                       {job.jobCode}
                     </span>
-                    <h3 className="text-base font-bold text-slate-900">{job.title}</h3>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 break-words">{job.title}</h3>
                   </div>
                   <Badge statusKey={job.status as any}>{job.status.replace('_', ' ')}</Badge>
                 </div>
 
                 {/* Status Timeline */}
-                <div className="grid grid-cols-5 gap-1.5 text-center pt-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 text-center pt-2">
                   {statusSteps.map((step, idx) => {
                     const isDone = currentStepIndex >= idx;
                     const isCurrent = currentStepIndex === idx;
@@ -166,7 +166,7 @@ export default function CustomerTrackClientView() {
       </div>
 
       <div className="text-center text-xs text-slate-400 py-4 flex items-center justify-center gap-1">
-        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+        <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
         <span>ServiceFlow Real-Time Customer Verification Protocol</span>
       </div>
     </div>

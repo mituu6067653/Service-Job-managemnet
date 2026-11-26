@@ -85,10 +85,10 @@ export default function RequestsClientView({ initialRequests, customers }: Reque
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Service Requests Inbox</h1>
-          <p className="text-sm text-slate-500">Capture incoming customer leads and convert them into dispatches</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Service Requests Inbox</h1>
+          <p className="text-xs sm:text-sm text-slate-500">Capture incoming customer leads and convert them into dispatches</p>
         </div>
-        <Button onClick={() => setIsModalOpen(true)}>
+        <Button onClick={() => setIsModalOpen(true)} className="w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-2" /> Log Service Request
         </Button>
       </div>
@@ -103,36 +103,37 @@ export default function RequestsClientView({ initialRequests, customers }: Reque
         ) : (
           requests.map((req) => (
             <Card key={req.id} className="hover:border-brand-300 transition-all">
-              <CardContent className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="space-y-1.5 flex-1">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-sm font-bold text-slate-900">{req.serviceType}</h3>
+              <CardContent className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 break-words">{req.serviceType}</h3>
                     <Badge statusKey={req.status as any}>{req.status}</Badge>
                   </div>
 
-                  <p className="text-xs text-slate-600 line-clamp-1">{req.description}</p>
+                  <p className="text-xs text-slate-600 line-clamp-2">{req.description}</p>
 
-                  <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap pt-1">
+                  <div className="flex items-center gap-2 sm:gap-4 text-xs text-slate-500 flex-wrap pt-1">
                     <span className="flex items-center gap-1 text-slate-700 font-medium">
-                      <User className="w-3.5 h-3.5 text-slate-400" /> {req.customer.name}
+                      <User className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {req.customer.name}
                     </span>
-                    <span>•</span>
+                    <span className="hidden sm:inline">•</span>
                     <span className="flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400" /> {req.location}
+                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {req.location}
                     </span>
-                    <span>•</span>
+                    <span className="hidden sm:inline">•</span>
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" /> {req.preferredDate || 'Flexible'}
+                      <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {req.preferredDate || 'Flexible'}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100 shrink-0">
                   {req.status !== 'CONVERTED' ? (
                     <Button
                       size="sm"
                       isLoading={convertingId === req.id}
                       onClick={() => handleConvert(req.id)}
+                      className="w-full sm:w-auto"
                     >
                       Convert to Job <ArrowRight className="w-3.5 h-3.5 ml-1" />
                     </Button>
@@ -150,9 +151,9 @@ export default function RequestsClientView({ initialRequests, customers }: Reque
 
       {/* Log Request Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 space-y-4 shadow-xl border border-slate-200 animate-in fade-in">
-            <h3 className="text-lg font-bold text-slate-900">Log Service Request</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-4 sm:p-6 space-y-4 shadow-xl border border-slate-200 animate-in fade-in max-h-[90vh] overflow-y-auto">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">Log Service Request</h3>
             {error && <div className="text-xs text-rose-600 bg-rose-50 p-2 rounded">{error}</div>}
 
             <form onSubmit={handleCreateRequest} className="space-y-3">
@@ -198,7 +199,7 @@ export default function RequestsClientView({ initialRequests, customers }: Reque
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
               />
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Input
                   label="Preferred Date"
                   type="date"
@@ -213,7 +214,7 @@ export default function RequestsClientView({ initialRequests, customers }: Reque
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-3">
+              <div className="flex items-center justify-end gap-3 pt-3">
                 <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
                   Cancel
                 </Button>

@@ -39,11 +39,11 @@ export default async function ReportsPage() {
     <AppShell user={session}>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Business Analytics & Performance</h1>
-          <p className="text-sm text-slate-500">Operational KPIs, revenue metrics, job fulfillment efficiency</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Business Analytics & Performance</h1>
+          <p className="text-xs sm:text-sm text-slate-500">Operational KPIs, revenue metrics, job fulfillment efficiency</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           <Card>
             <CardContent className="pt-6">
               <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Revenue Collected</p>

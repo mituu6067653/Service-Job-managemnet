@@ -17,7 +17,6 @@ import {
   UserCheck,
   ShieldCheck,
   Building2,
-  BarChart,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -58,7 +57,7 @@ export default async function DashboardPage() {
     );
   }
 
-  // 2. MANAGER DASHBOARD - Operational & Operations Focus (No Settings/Financial Admin override)
+  // 2. MANAGER DASHBOARD - Operational & Operations Focus
   if (session.role === 'MANAGER') {
     const [
       totalJobs,
@@ -91,20 +90,20 @@ export default async function DashboardPage() {
     return (
       <AppShell user={session}>
         {/* Manager Header Greeting */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-purple-700 to-indigo-600 text-white p-6 rounded-xl shadow-md">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-purple-700 to-indigo-600 text-white p-4 sm:p-6 rounded-xl shadow-md">
+          <div className="min-w-0">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white mb-2">
-              <Building2 className="w-3.5 h-3.5" /> Manager Operational Portal
+              <Building2 className="w-3.5 h-3.5 shrink-0" /> Manager Operational Portal
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Welcome, {session.name}</h1>
-            <p className="text-purple-100 text-sm mt-1">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight truncate">Welcome, {session.name}</h1>
+            <p className="text-purple-100 text-xs sm:text-sm mt-1">
               Field Operations & Scheduling for <span className="font-semibold text-white">{session.businessName}</span>
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/jobs"
-              className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-lg bg-white text-purple-700 hover:bg-purple-50 transition-colors shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-lg bg-white text-purple-700 hover:bg-purple-50 transition-colors shadow-sm"
             >
               + Create New Job
             </Link>
@@ -112,7 +111,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Manager KPI Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
           <Card className="hover:border-slate-300 transition-colors">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
@@ -120,7 +119,7 @@ export default async function DashboardPage() {
                   <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">In-Progress Jobs</p>
                   <h3 className="text-2xl font-bold text-slate-900 mt-1">{inProgressJobsCount}</h3>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
                   <Clock className="w-5 h-5" />
                 </div>
               </div>
@@ -137,7 +136,7 @@ export default async function DashboardPage() {
                   <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Pending Dispatch</p>
                   <h3 className="text-2xl font-bold text-slate-900 mt-1">{pendingJobsCount}</h3>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
                   <Briefcase className="w-5 h-5" />
                 </div>
               </div>
@@ -152,12 +151,12 @@ export default async function DashboardPage() {
                   <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Completed Jobs</p>
                   <h3 className="text-2xl font-bold text-slate-900 mt-1">{completedJobsCount}</h3>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
               </div>
               <p className="text-xs text-emerald-600 font-medium mt-3 flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5" /> High field completion
+                <TrendingUp className="w-3.5 h-3.5 shrink-0" /> High field completion
               </p>
             </CardContent>
           </Card>
@@ -169,8 +168,8 @@ export default async function DashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between w-full">
-                  <span className="flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-purple-600" />
+                  <span className="flex items-center gap-2 text-sm sm:text-base">
+                    <Briefcase className="w-4 h-4 text-purple-600 shrink-0" />
                     Active Field Dispatch Jobs
                   </span>
                   <Link href="/jobs" className="text-xs text-purple-600 hover:underline flex items-center gap-1 font-semibold">
@@ -184,19 +183,19 @@ export default async function DashboardPage() {
                 ) : (
                   <div className="divide-y divide-slate-100">
                     {recentJobs.map((job: any) => (
-                      <div key={job.id} className="p-4 hover:bg-slate-50/80 transition-colors flex items-center justify-between">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                      <div key={job.id} className="p-4 hover:bg-slate-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-xs font-mono font-bold text-purple-700">{job.jobCode}</span>
-                            <h4 className="text-sm font-semibold text-slate-900">{job.title}</h4>
+                            <h4 className="text-sm font-semibold text-slate-900 break-words">{job.title}</h4>
                           </div>
-                          <p className="text-xs text-slate-500 flex items-center gap-2">
+                          <p className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
                             <span>Customer: <strong className="text-slate-700">{job.customer.name}</strong></span>
                             <span>•</span>
                             <span>Tech: <strong className="text-slate-700">{job.technician?.name || 'Unassigned'}</strong></span>
                           </p>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0">
                           <Badge statusKey={job.status as any}>{job.status.replace('_', ' ')}</Badge>
                           <Link
                             href={`/jobs/${job.id}`}
@@ -216,8 +215,8 @@ export default async function DashboardPage() {
           <div className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <UserCheck className="w-4 h-4 text-purple-600" />
+                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+                  <UserCheck className="w-4 h-4 text-purple-600 shrink-0" />
                   Field Technician Status
                 </CardTitle>
               </CardHeader>
@@ -225,14 +224,14 @@ export default async function DashboardPage() {
                 {technicians.length === 0 ? (
                   <p className="text-xs text-slate-500 text-center py-4">No active technicians registered.</p>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {technicians.map((tech: any) => (
-                      <div key={tech.id} className="p-3 rounded-lg border border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                        <div>
-                          <h4 className="text-sm font-semibold text-slate-900">{tech.name}</h4>
-                          <p className="text-[11px] text-slate-500">{tech.specialization || 'Field Specialist'}</p>
+                      <div key={tech.id} className="p-3 rounded-lg border border-slate-100 bg-slate-50/50 flex items-center justify-between gap-2">
+                        <div className="min-w-0">
+                          <h4 className="text-sm font-semibold text-slate-900 truncate">{tech.name}</h4>
+                          <p className="text-[11px] text-slate-500 truncate">{tech.specialization || 'Field Specialist'}</p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right shrink-0">
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-purple-50 text-purple-700">
                             {tech.jobs.length} Active {tech.jobs.length === 1 ? 'Job' : 'Jobs'}
                           </span>
@@ -291,26 +290,26 @@ export default async function DashboardPage() {
   return (
     <AppShell user={session}>
       {/* Admin Greeting */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-brand-600 to-brand-500 text-white p-6 rounded-xl shadow-md">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-brand-600 to-brand-500 text-white p-4 sm:p-6 rounded-xl shadow-md">
+        <div className="min-w-0">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white mb-2">
-            <ShieldCheck className="w-3.5 h-3.5" /> Full Executive Admin Control
+            <ShieldCheck className="w-3.5 h-3.5 shrink-0" /> Full Executive Admin Control
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">Good day, {session.name}</h1>
-          <p className="text-brand-100 text-sm mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight truncate">Good day, {session.name}</h1>
+          <p className="text-brand-100 text-xs sm:text-sm mt-1">
             Executive Control Overview for <span className="font-semibold text-white">{session.businessName}</span>
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap shrink-0">
           <Link
             href="/settings"
-            className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20 shadow-sm"
+            className="inline-flex items-center justify-center px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20 shadow-sm"
           >
             System Settings
           </Link>
           <Link
             href="/jobs"
-            className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-lg bg-white text-brand-600 hover:bg-brand-50 transition-colors shadow-sm"
+            className="inline-flex items-center justify-center px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-brand-600 hover:bg-brand-50 transition-colors shadow-sm"
           >
             + Create New Job
           </Link>
@@ -318,7 +317,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Admin KPI Cards Grid (Includes Revenue & System Receivables) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         <Card className="hover:border-slate-300 transition-colors">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
@@ -326,7 +325,7 @@ export default async function DashboardPage() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">In-Progress Jobs</p>
                 <h3 className="text-2xl font-bold text-slate-900 mt-1">{inProgressJobsCount}</h3>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
                 <Clock className="w-5 h-5" />
               </div>
             </div>
@@ -343,7 +342,7 @@ export default async function DashboardPage() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Pending Schedule</p>
                 <h3 className="text-2xl font-bold text-slate-900 mt-1">{pendingJobsCount}</h3>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
                 <Briefcase className="w-5 h-5" />
               </div>
             </div>
@@ -358,12 +357,12 @@ export default async function DashboardPage() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Completed Jobs</p>
                 <h3 className="text-2xl font-bold text-slate-900 mt-1">{completedJobsCount}</h3>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
             </div>
             <p className="text-xs text-emerald-600 font-medium mt-3 flex items-center gap-1">
-              <TrendingUp className="w-3.5 h-3.5" /> High quality delivery rate
+              <TrendingUp className="w-3.5 h-3.5 shrink-0" /> High quality delivery rate
             </p>
           </CardContent>
         </Card>
@@ -373,9 +372,9 @@ export default async function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Pending Receivables</p>
-                <h3 className="text-xl font-bold text-slate-900 mt-1">{formatCurrency(outstandingBalance)}</h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">{formatCurrency(outstandingBalance)}</h3>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
                 <AlertCircle className="w-5 h-5" />
               </div>
             </div>
@@ -390,8 +389,8 @@ export default async function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between w-full">
-                <span className="flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-brand-500" />
+                <span className="flex items-center gap-2 text-sm sm:text-base">
+                  <Briefcase className="w-4 h-4 text-brand-500 shrink-0" />
                   Recent Active Jobs
                 </span>
                 <Link href="/jobs" className="text-xs text-brand-600 hover:underline flex items-center gap-1 font-semibold">
@@ -405,19 +404,19 @@ export default async function DashboardPage() {
               ) : (
                 <div className="divide-y divide-slate-100">
                   {recentJobs.map((job: any) => (
-                    <div key={job.id} className="p-4 hover:bg-slate-50/80 transition-colors flex items-center justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
+                    <div key={job.id} className="p-4 hover:bg-slate-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="space-y-1 min-w-0 flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-xs font-mono font-bold text-brand-600">{job.jobCode}</span>
-                          <h4 className="text-sm font-semibold text-slate-900">{job.title}</h4>
+                          <h4 className="text-sm font-semibold text-slate-900 break-words">{job.title}</h4>
                         </div>
-                        <p className="text-xs text-slate-500 flex items-center gap-2">
+                        <p className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
                           <span>Customer: <strong className="text-slate-700">{job.customer.name}</strong></span>
                           <span>•</span>
                           <span>Tech: <strong className="text-slate-700">{job.technician?.name || 'Unassigned'}</strong></span>
                         </p>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0">
                         <Badge statusKey={job.status as any}>{job.status.replace('_', ' ')}</Badge>
                         <Link
                           href={`/jobs/${job.id}`}
@@ -437,8 +436,8 @@ export default async function DashboardPage() {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <UserCheck className="w-4 h-4 text-brand-500" />
+              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+                <UserCheck className="w-4 h-4 text-brand-500 shrink-0" />
                 Technician Workload
               </CardTitle>
             </CardHeader>
@@ -446,14 +445,14 @@ export default async function DashboardPage() {
               {technicians.length === 0 ? (
                 <p className="text-xs text-slate-500 text-center py-4">No active technicians registered.</p>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {technicians.map((tech: any) => (
-                    <div key={tech.id} className="p-3 rounded-lg border border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                      <div>
-                        <h4 className="text-sm font-semibold text-slate-900">{tech.name}</h4>
-                        <p className="text-[11px] text-slate-500">{tech.specialization || 'Field Specialist'}</p>
+                    <div key={tech.id} className="p-3 rounded-lg border border-slate-100 bg-slate-50/50 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <h4 className="text-sm font-semibold text-slate-900 truncate">{tech.name}</h4>
+                        <p className="text-[11px] text-slate-500 truncate">{tech.specialization || 'Field Specialist'}</p>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right shrink-0">
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-brand-50 text-brand-700">
                           {tech.jobs.length} Active {tech.jobs.length === 1 ? 'Job' : 'Jobs'}
                         </span>

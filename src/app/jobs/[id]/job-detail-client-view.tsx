@@ -64,7 +64,7 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
   return (
     <div className="space-y-6">
       {/* Top Bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
         <Link href="/jobs" className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-slate-900">
           <ArrowLeft className="w-4 h-4 mr-1" /> Back to Job Directory
         </Link>
@@ -75,27 +75,29 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
 
       {/* Header Info */}
       <Card>
-        <CardContent className="pt-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
+        <CardContent className="p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm font-mono font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
                 {job.jobCode}
               </span>
-              <h1 className="text-xl font-bold text-slate-900">{job.title}</h1>
+              <h1 className="text-lg sm:text-xl font-bold text-slate-900 break-words">{job.title}</h1>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Priority: <strong className="text-slate-700">{job.priority}</strong> • Scheduled: {job.scheduledDate || 'Flexible'}</p>
+            <p className="text-xs text-slate-500 mt-1 flex-wrap">
+              Priority: <strong className="text-slate-700">{job.priority}</strong> • Scheduled: {job.scheduledDate || 'Flexible'}
+            </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             {job.invoices.length === 0 ? (
               <Link href={`/invoices?createForJob=${job.id}`}>
-                <Button variant="primary">
+                <Button variant="primary" size="sm">
                   <FileText className="w-4 h-4 mr-2" /> Generate Invoice
                 </Button>
               </Link>
             ) : (
               <Link href={`/invoices`}>
-                <Button variant="outline">
+                <Button variant="outline" size="sm">
                   <FileText className="w-4 h-4 mr-2" /> View Invoice ({job.invoices[0].invoiceNumber})
                 </Button>
               </Link>
@@ -104,22 +106,22 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
         </CardContent>
       </Card>
 
-      {/* Job Workflow Timeline (Design.md Section 15 Requirement) */}
+      {/* Job Workflow Timeline */}
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-3">
           <CardTitle className="text-xs uppercase font-bold tracking-wider text-slate-500">
             Job Lifecycle Timeline
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-center">
             {statusSteps.map((step, idx) => {
               const isDone = currentStepIndex >= idx;
               const isCurrent = currentStepIndex === idx;
               return (
                 <div
                   key={step}
-                  className={`p-3 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1.5 transition-all ${
+                  className={`p-2.5 sm:p-3 rounded-lg border text-xs font-semibold flex flex-col items-center justify-center gap-1.5 transition-all ${
                     isCurrent
                       ? 'bg-brand-500 text-white border-brand-600 shadow-sm'
                       : isDone
@@ -128,7 +130,7 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
                   }`}
                 >
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>{step.replace('_', ' ')}</span>
+                  <span className="truncate w-full">{step.replace('_', ' ')}</span>
                 </div>
               );
             })}
@@ -137,13 +139,13 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
       </Card>
 
       {/* Main Grid: Details & Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Customer & Service Details */}
-        <div className="md:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="w-4 h-4 text-brand-500" />
+              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+                <User className="w-4 h-4 text-brand-500 shrink-0" />
                 Customer & Location Info
               </CardTitle>
             </CardHeader>
@@ -156,7 +158,7 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
                 <div>
                   <span className="text-xs text-slate-400 font-semibold uppercase block">Contact Phone</span>
                   <span className="font-semibold text-slate-900 flex items-center gap-1">
-                    <Phone className="w-3.5 h-3.5 text-slate-400" /> {job.customer.phone}
+                    <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {job.customer.phone}
                   </span>
                 </div>
               </div>
@@ -171,21 +173,21 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-brand-500" />
+              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+                <FileText className="w-4 h-4 text-brand-500 shrink-0" />
                 Work Details & Description
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
               <div>
                 <span className="text-xs text-slate-400 font-semibold uppercase block mb-1">Issue Description</span>
-                <p className="p-3 rounded-md bg-slate-50 border border-slate-100 text-slate-800">{job.description}</p>
+                <p className="p-3 rounded-md bg-slate-50 border border-slate-100 text-slate-800 text-xs sm:text-sm">{job.description}</p>
               </div>
 
               {job.notes && (
                 <div>
                   <span className="text-xs text-slate-400 font-semibold uppercase block mb-1">Technician Work Logs</span>
-                  <pre className="p-3 rounded-md bg-slate-900 text-slate-100 text-xs font-mono whitespace-pre-wrap">
+                  <pre className="p-3 rounded-md bg-slate-900 text-slate-100 text-xs font-mono whitespace-pre-wrap overflow-x-auto">
                     {job.notes}
                   </pre>
                 </div>
@@ -198,8 +200,8 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <UserCheck className="w-4 h-4 text-brand-500" />
+              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+                <UserCheck className="w-4 h-4 text-brand-500 shrink-0" />
                 Assigned Technician
               </CardTitle>
             </CardHeader>
@@ -209,7 +211,7 @@ export default function JobDetailClientView({ job: initialJob, technicians }: Jo
                   <div className="text-sm font-bold text-slate-900">{job.technician.name}</div>
                   <div className="text-xs text-slate-500">{job.technician.specialization}</div>
                   <div className="text-xs text-slate-600 flex items-center gap-1 pt-1">
-                    <Phone className="w-3.5 h-3.5 text-slate-400" /> {job.technician.phone}
+                    <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {job.technician.phone}
                   </div>
                 </div>
               ) : (

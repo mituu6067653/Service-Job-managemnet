@@ -64,10 +64,10 @@ export default function CustomerClientView({ initialCustomers }: CustomerClientV
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Customer Directory</h1>
-          <p className="text-sm text-slate-500">Centralized profile and service history management</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Customer Directory</h1>
+          <p className="text-xs sm:text-sm text-slate-500">Centralized profile and service history management</p>
         </div>
-        <Button onClick={() => setIsModalOpen(true)}>
+        <Button onClick={() => setIsModalOpen(true)} className="w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-2" /> Add New Customer
         </Button>
       </div>
@@ -151,9 +151,9 @@ export default function CustomerClientView({ initialCustomers }: CustomerClientV
 
       {/* Add Customer Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 space-y-4 shadow-xl border border-slate-200 animate-in fade-in">
-            <h3 className="text-lg font-bold text-slate-900">Add New Customer</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-4 sm:p-6 space-y-4 shadow-xl border border-slate-200 animate-in fade-in max-h-[90vh] overflow-y-auto">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">Add New Customer</h3>
             {error && <div className="text-xs text-rose-600 bg-rose-50 p-2 rounded">{error}</div>}
 
             <form onSubmit={handleCreateCustomer} className="space-y-3">

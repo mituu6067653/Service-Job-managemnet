@@ -91,21 +91,21 @@ export default function JobClientView({ initialJobs, customers, technicians }: J
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Job Control Engine</h1>
-          <p className="text-sm text-slate-500">Track and manage service operations lifecycle</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Job Control Engine</h1>
+          <p className="text-xs sm:text-sm text-slate-500">Track and manage service operations lifecycle</p>
         </div>
-        <Button onClick={() => setIsModalOpen(true)}>
+        <Button onClick={() => setIsModalOpen(true)} className="w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-2" /> Dispatch New Job
         </Button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 overflow-x-auto pb-1">
+      {/* Tabs with smooth horizontal scroll on mobile */}
+      <div className="flex items-center gap-1.5 border-b border-slate-200 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
         {['ALL', 'SCHEDULED', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-3.5 py-2 text-xs font-semibold rounded-t-md transition-colors whitespace-nowrap ${
+            className={`px-3 py-2 text-xs font-semibold rounded-t-md transition-colors whitespace-nowrap shrink-0 ${
               activeTab === tab
                 ? 'bg-white border-x border-t border-slate-200 text-brand-600 border-b-2 border-b-brand-500'
                 : 'text-slate-500 hover:text-slate-800'
@@ -127,35 +127,35 @@ export default function JobClientView({ initialJobs, customers, technicians }: J
         ) : (
           filteredJobs.map((job) => (
             <Card key={job.id} className="hover:border-brand-300 transition-all">
-              <CardContent className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="space-y-2 flex-1">
-                  <div className="flex items-center gap-3 flex-wrap">
+              <CardContent className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-2 flex-1 min-w-0">
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                     <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-brand-50 text-brand-700 border border-brand-200">
                       {job.jobCode}
                     </span>
-                    <h3 className="text-base font-bold text-slate-900">{job.title}</h3>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 break-words">{job.title}</h3>
                     <Badge statusKey={job.status as any}>{job.status.replace('_', ' ')}</Badge>
                   </div>
 
-                  <p className="text-xs text-slate-600 line-clamp-1">{job.description}</p>
+                  <p className="text-xs text-slate-600 line-clamp-2">{job.description}</p>
 
-                  <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap pt-1">
+                  <div className="flex items-center gap-2 sm:gap-4 text-xs text-slate-500 flex-wrap pt-1">
                     <span className="flex items-center gap-1 font-medium text-slate-700">
-                      <User className="w-3.5 h-3.5 text-slate-400" /> {job.customer?.name}
+                      <User className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {job.customer?.name}
                     </span>
-                    <span>•</span>
+                    <span className="hidden sm:inline">•</span>
                     <span className="flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400" /> {job.address}
+                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {job.address}
                     </span>
-                    <span>•</span>
+                    <span className="hidden sm:inline">•</span>
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" /> {job.scheduledDate || 'Flexible'} ({job.scheduledTime || 'N/A'})
+                      <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {job.scheduledDate || 'Flexible'} ({job.scheduledTime || 'N/A'})
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 justify-between md:justify-end">
-                  <div className="text-right">
+                <div className="flex items-center gap-4 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 justify-between md:justify-end shrink-0">
+                  <div className="text-left md:text-right">
                     <span className="text-[10px] uppercase font-bold text-slate-400 block">Est. Cost</span>
                     <span className="text-sm font-bold text-slate-900">{formatCurrency(job.estimatedCost)}</span>
                   </div>
@@ -174,9 +174,9 @@ export default function JobClientView({ initialJobs, customers, technicians }: J
 
       {/* Dispatch Job Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-          <div className="bg-white rounded-lg max-w-lg w-full p-6 space-y-4 shadow-xl border border-slate-200 animate-in fade-in max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-bold text-slate-900">Dispatch New Service Job</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 sm:p-4">
+          <div className="bg-white rounded-lg max-w-lg w-full p-4 sm:p-6 space-y-4 shadow-xl border border-slate-200 animate-in fade-in max-h-[90vh] overflow-y-auto">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">Dispatch New Service Job</h3>
             {error && <div className="text-xs text-rose-600 bg-rose-50 p-2 rounded">{error}</div>}
 
             <form onSubmit={handleCreateJob} className="space-y-4">
@@ -222,7 +222,7 @@ export default function JobClientView({ initialJobs, customers, technicians }: J
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               />
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
                     Assign Technician
@@ -253,12 +253,12 @@ export default function JobClientView({ initialJobs, customers, technicians }: J
                     <option value="LOW">Low</option>
                     <option value="MEDIUM">Medium</option>
                     <option value="HIGH">High</option>
-                    <option value="URGENT">Urgent</option>
+                    <option value="EMERGENCY">Emergency</option>
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Input
                   label="Scheduled Date"
                   type="date"
@@ -266,14 +266,21 @@ export default function JobClientView({ initialJobs, customers, technicians }: J
                   onChange={(e) => setFormData({ ...formData, scheduledDate: e.target.value })}
                 />
                 <Input
-                  label="Estimated Cost (₹)"
-                  type="number"
-                  value={formData.estimatedCost}
-                  onChange={(e) => setFormData({ ...formData, estimatedCost: e.target.value })}
+                  label="Scheduled Slot"
+                  placeholder="e.g. 10:00 AM - 12:00 PM"
+                  value={formData.scheduledTime}
+                  onChange={(e) => setFormData({ ...formData, scheduledTime: e.target.value })}
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-3">
+              <Input
+                label="Estimated Service Cost (₹)"
+                type="number"
+                value={formData.estimatedCost}
+                onChange={(e) => setFormData({ ...formData, estimatedCost: e.target.value })}
+              />
+
+              <div className="flex items-center justify-end gap-3 pt-3">
                 <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
                   Cancel
                 </Button>

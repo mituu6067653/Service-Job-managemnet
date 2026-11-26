@@ -26,15 +26,15 @@ export default async function SettingsPage() {
     <AppShell user={session}>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Business Profile & Settings</h1>
-          <p className="text-sm text-slate-500">Configure business identity, tax credentials, and multi-tenant security</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Business Profile & Settings</h1>
+          <p className="text-xs sm:text-sm text-slate-500">Configure business identity, tax credentials, and multi-tenant security</p>
         </div>
 
-        <div className="max-w-2xl">
+        <div className="max-w-2xl w-full">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Building className="w-4 h-4 text-brand-500" />
+              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+                <Building className="w-4 h-4 text-brand-500 shrink-0" />
                 Workspace Details
               </CardTitle>
             </CardHeader>
@@ -46,11 +46,11 @@ export default async function SettingsPage() {
               <Input label="GST / Tax Identification Number" defaultValue={business?.taxNumber || 'GSTIN29ABCDE1234F1Z5'} readOnly />
               <Input label="Operating Headquarter Address" defaultValue={business?.address || ''} readOnly />
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-                  <ShieldCheck className="w-4 h-4" /> Multi-tenant workspace active
+                  <ShieldCheck className="w-4 h-4 shrink-0" /> Multi-tenant workspace active
                 </span>
-                <Button variant="outline" size="sm" disabled>
+                <Button variant="outline" size="sm" disabled className="w-full sm:w-auto">
                   Saved
                 </Button>
               </div>

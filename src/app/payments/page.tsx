@@ -31,14 +31,14 @@ export default async function PaymentsPage() {
     <AppShell user={session}>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Payments Log</h1>
-          <p className="text-sm text-slate-500">Real-time ledger of recorded payments, UPI UTR numbers, and receipts</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Payments Log</h1>
+          <p className="text-xs sm:text-sm text-slate-500">Real-time ledger of recorded payments, UPI UTR numbers, and receipts</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-brand-500" />
+            <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+              <CreditCard className="w-4 h-4 text-brand-500 shrink-0" />
               Recorded Transactions Ledger
             </CardTitle>
           </CardHeader>
@@ -48,9 +48,9 @@ export default async function PaymentsPage() {
             ) : (
               <div className="divide-y divide-slate-100">
                 {payments.map((p: any) => (
-                  <div key={p.id} className="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
+                  <div key={p.id} className="p-3.5 sm:p-4 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
                           {p.method}
                         </span>
@@ -58,14 +58,16 @@ export default async function PaymentsPage() {
                           Invoice: {p.invoice.invoiceNumber}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-700 flex items-center gap-2">
+                      <p className="text-xs text-slate-700 flex items-center gap-2 flex-wrap">
                         <span>Customer: <strong>{p.invoice.customer.name}</strong></span>
-                        {p.transactionId && <span>• Ref/UTR: <code className="bg-slate-100 px-1 py-0.5 rounded">{p.transactionId}</code></span>}
+                        {p.transactionId && (
+                          <span>• Ref/UTR: <code className="bg-slate-100 px-1 py-0.5 rounded text-[11px]">{p.transactionId}</code></span>
+                        )}
                       </p>
                     </div>
 
-                    <div className="text-right">
-                      <span className="text-base font-bold text-emerald-600 block">
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0">
+                      <span className="text-sm sm:text-base font-bold text-emerald-600 block">
                         + {formatCurrency(p.amount)}
                       </span>
                       <span className="text-[10px] text-slate-400 block">{formatDate(p.paymentDate)}</span>
